@@ -165,30 +165,49 @@ faculty-upgradation-platform/
 
 Folder contents may evolve. Check the current repository if a path differs from this overview.
 
-## Roadmap
+## Implementation Status
 
 | Phase | Scope | Status |
 |---|---|---|
-| 1 — Foundation | Project structure, initial models and application setup | Complete |
-| 2 — Authentication | Registration/login, JWT handling and protected access | Implemented; add/verify automated tests |
-| 3 — Courses | Course catalog, course details and authorized course management | Planned / verify existing implementation |
-| 4 — Enrollment | Enrollment and module/course progress tracking | Planned |
-| 5 — Credits and achievements | Rules for awarding credits and badges | Planned |
-| 6 — Dashboards | Faculty and administrator summaries | Planned |
-| 7 — Quality and polish | Validation, error states, accessibility, tests and documentation | Ongoing |
+| 1 — Foundation | Project scaffolding, models, database connection | ✅ Complete |
+| 2 — Auth | JWT login/register, RBAC protected routes | ✅ Complete |
+| 3 — Courses | Course CRUD, admin management, modules, catalog browse/filter | ✅ Complete |
+| 4 — Enrollment | Course enrollment, progress tracking, module completion | ✅ Complete |
+| 5 — Credits & Achievements | Auto-award credits on completion, achievement rules | ✅ Complete |
+| 6 — Testing & Seeding | Database seed script, automated test suite | ✅ Complete |
+| 7 — Polish & Documentation | Contributor guide, backlog issue preparation | ✅ Complete |
+
+---
+
+## Database Seeding & Testing
+
+### Seed Demo Data
+To populate the database with default admin/faculty test users and sample courses:
+```bash
+cd backend
+npm run seed
+```
+
+### Run Backend Tests
+```bash
+cd backend
+npm test
+```
+
+### Run Frontend Build & Lint
+```bash
+cd frontend
+npm run lint
+npm run build
+```
+
+---
 
 ## Contributing
 
-Contributions are welcome. Before starting work:
+Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for local environment setup, architecture overview, security rules, and pull request guidelines.
 
-1. Review the existing code and open Issues to avoid duplicating work.
-2. Comment on an issue and coordinate with the maintainers before beginning substantial changes.
-3. Create a focused branch, for example `feat/course-catalog` or `fix/api-error-responses`.
-4. Keep pull requests focused on one issue.
-5. Include test steps and screenshots for user-interface changes.
-6. Never commit `.env` files, credentials, tokens, or real user data.
-
-Create and track work in the [GitHub Issues](https://github.com/tanishqkale91-cmd/faculty-upgradation-platform/issues) page.
+Create and track work in the [GitHub Issues](https://github.com/Geektoberfest/Geektoberfest-faculty-upgradation-platform/issues) page.
 
 ## Security Notes
 
