@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
-const NAV_ITEMS = [
+const FACULTY_NAV_ITEMS = [
   {
     to: '/dashboard',
     label: 'Dashboard',
@@ -66,6 +66,64 @@ const NAV_ITEMS = [
   },
 ];
 
+const ADMIN_NAV_ITEMS = [
+  {
+    to: '/admin/dashboard',
+    label: 'Admin Dashboard',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+      </svg>
+    ),
+  },
+  {
+    to: '/admin/courses',
+    label: 'Course Management',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+      </svg>
+    ),
+  },
+  {
+    to: '/admin/faculty',
+    label: 'Faculty Management',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+      </svg>
+    ),
+  },
+  {
+    to: '/admin/enrollments',
+    label: 'Enrollment Overview',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+      </svg>
+    ),
+  },
+  {
+    to: '/admin/credits',
+    label: 'Credit Management',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    ),
+  },
+  {
+    to: '/courses',
+    label: 'View Faculty Catalog',
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.5 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+      </svg>
+    ),
+  },
+];
+
 function AppLayout({ children }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -80,6 +138,8 @@ function AppLayout({ children }) {
     ? user.name.split(' ').map((n) => n[0]).slice(0, 2).join('').toUpperCase()
     : '?';
 
+  const navItems = user?.role === 'admin' ? ADMIN_NAV_ITEMS : FACULTY_NAV_ITEMS;
+
   return (
     <div className="flex min-h-screen" style={{ background: 'var(--color-bg)' }}>
       {/* ── Mobile overlay ── */}
@@ -92,12 +152,13 @@ function AppLayout({ children }) {
 
       {/* ── Sidebar ── */}
       <aside
-        className="fixed top-0 left-0 h-full z-30 flex flex-col transition-transform duration-300"
+        className={`fixed top-0 left-0 h-full z-30 flex flex-col transition-transform duration-300 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        }`}
         style={{
           width: '240px',
           background: 'var(--color-surface)',
           borderRight: '1px solid var(--color-border)',
-          transform: sidebarOpen ? 'translateX(0)' : undefined,
         }}
       >
         {/* Logo */}
@@ -118,7 +179,7 @@ function AppLayout({ children }) {
 
         {/* Nav */}
         <nav className="flex-1 overflow-y-auto py-4 px-3">
-          {NAV_ITEMS.map((item) => (
+          {navItems.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -151,12 +212,12 @@ function AppLayout({ children }) {
             </div>
             <div className="min-w-0">
               <p className="text-xs font-semibold truncate" style={{ color: 'var(--color-text)' }}>{user?.name}</p>
-              <p className="text-xs truncate" style={{ color: 'var(--color-text-muted)' }}>{user?.role}</p>
+              <p className="text-xs truncate capitalize" style={{ color: 'var(--color-text-muted)' }}>{user?.role}</p>
             </div>
           </div>
           <button
             onClick={handleLogout}
-            className="w-full text-xs py-2 px-3 rounded-lg flex items-center gap-2 transition-colors duration-150"
+            className="w-full text-xs py-2 px-3 rounded-lg flex items-center gap-2 transition-colors duration-150 cursor-pointer"
             style={{ background: 'var(--color-surface-2)', color: 'var(--color-text-muted)' }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -168,24 +229,33 @@ function AppLayout({ children }) {
       </aside>
 
       {/* ── Main content ── */}
-      <div className="flex-1 flex flex-col" style={{ marginLeft: '240px' }}>
+      <div className="flex-1 flex flex-col min-w-0 lg:ml-[240px]">
         {/* Mobile header */}
         <header
-          className="lg:hidden flex items-center px-4 py-3 sticky top-0 z-10"
+          className="lg:hidden flex items-center justify-between px-4 py-3 sticky top-0 z-10"
           style={{ background: 'var(--color-surface)', borderBottom: '1px solid var(--color-border)' }}
         >
-          <button
-            onClick={() => setSidebarOpen(true)}
-            style={{ color: 'var(--color-text)', background: 'none', border: 'none', cursor: 'pointer' }}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              style={{ color: 'var(--color-text)', background: 'none', border: 'none', cursor: 'pointer' }}
+              aria-label="Toggle navigation menu"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+            <span className="text-sm font-bold gradient-text">Faculty Platform</span>
+          </div>
+          <div
+            className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white shrink-0"
+            style={{ background: 'linear-gradient(135deg,var(--color-primary),var(--color-accent))' }}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-          <span className="ml-3 text-sm font-semibold">Faculty Platform</span>
+            {initials}
+          </div>
         </header>
 
-        <main className="flex-1 p-6 md:p-8 animate-fadeIn">
+        <main className="flex-1 p-4 md:p-8 animate-fadeIn">
           {children}
         </main>
       </div>
